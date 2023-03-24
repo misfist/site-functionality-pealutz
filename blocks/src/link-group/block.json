@@ -1,0 +1,87 @@
+{
+    "apiVersion": 2,
+    "version": "1.0.0",
+    "textdomain": "site-functionality",
+    "name": "site-functionality/link-group",
+    "title": "Link Group",
+    "icon": "admin-links",
+    "category": "touts",
+    "collection": "site-functionality",
+    "description": "Display a linked group of blocks.",
+    "keywords": [
+        "callout",
+        "group",
+        "button"
+    ],
+    "attributes": {
+        "url": {
+            "type": "string",
+            "default": ""
+        },
+        "linkTarget": {
+			"type": "string"
+		},
+		"rel": {
+			"type": "string"
+        },
+        "className": {
+            "type": "string",
+            "default": "link-group"
+        },
+        "anchor": {
+			"type": "string"
+        },
+        "attributesForBlocks":{
+            "title": "",
+            "data-vars-ga-label": "",
+            "data-vars-ga-category": ""
+        }
+    },
+    "supports": {
+        "align": true,
+        "anchor": true,
+        "color": {
+            "background": true,
+            "text": true,
+            "gradients": false,
+            "link": false
+        },
+        "customClassName": true,
+        "defaultStylePicker": false,
+        "__experimentalLayout": false,
+        "__experimentalStyle": false,
+        "__experimentalBorder": false
+    },
+    "example" : {
+        "attributes": {
+            "className": "link-group",
+            "url": "#"
+        },
+        "innerBlocks": [
+            {
+                "name": "core/group",
+                "attributes": {},
+                "innerBlocks": [
+                    {
+                        "name": "core/image",
+                        "attributes": {
+                            "className": "link-group__image",
+                            "sizeSlug": "medium",
+                            "url": "https://live.staticflickr.com/7271/6941148040_e7221059d9_b.jpg"
+                        }
+                    },
+                    {
+                        "name": "core/paragraph",
+                        "attributes": {
+                            "className": "link-group__content",
+                            "content": "Donate to the Uru-eu-Wau-Wau Association"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "style": "file:../../build/style-index.css",
+    "editorScript": "site-functionality",
+	"editorStyle": "file:../../build/index.css"
+}
