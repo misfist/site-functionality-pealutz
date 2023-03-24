@@ -1,6 +1,6 @@
 {
-	"name": "misfist/site-functionality",
-	"description": "Custom plugin",
+	"name": "misfist/site-functionality-pealutz",
+	"description": "Custom WordPress plugin",
 	"type": "wordpress-plugin",
 	"license": "GPL-2.0-or-later",
 	"config": {
