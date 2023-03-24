@@ -1,9 +1,8 @@
-name: deploy
+name: deploy-stage
 on:
   push:
     branches:
-      - main
-      - master
+      - staging
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -20,4 +19,4 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
-        run: rsync -avz --exclude={.*,*.lock,phpcs.xml.dist,node_modules/} --delete ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/ti/theterritoryimpact.org/web/wp-content/plugins/site-functionality/
+        run: rsync -avz --exclude={.*,*.lock,phpcs.xml.dist,node_modules/} --delete ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/u1488-gv1alqdvfpce/www/pealutz.me/public_html/wp-content/plugins/site-functionality/
