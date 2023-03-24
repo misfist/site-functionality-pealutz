@@ -8,6 +8,8 @@
 namespace SiteFunctionality\Taxonomies;
 
 use SiteFunctionality\Abstracts\Base;
+use SiteFunctionality\Taxonomies\ProjectType;
+use SiteFunctionality\Taxonomies\ProjectTag;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -31,6 +33,9 @@ class Taxonomies extends Base {
 	 *
 	 * @return void
 	 */
-	public function init() {}
+	public function init() {
+		new ProjectType( $this->version, $this->plugin_name );
+		new ProjectTag( $this->version, $this->plugin_name );
+	}
 
 }
