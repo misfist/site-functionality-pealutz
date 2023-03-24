@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Press extends PostType {
+class Project extends PostType {
 
 	/**
 	 * PostType data
