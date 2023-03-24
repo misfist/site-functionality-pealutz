@@ -39,6 +39,7 @@ class CustomFields extends Base {
 	public function init() {
 		\add_action( 'acf/init', array( $this, 'acf_settings' ) );
 		\add_action( 'acfe/init', array( $this, 'acfe_settings' ) );
+		\add_action( 'acf/init', array( $this, 'register_fields' ) );
 	}
 
 	/**
@@ -71,5 +72,319 @@ class CustomFields extends Base {
 		\acfe_update_setting( 'modules/options_pages', false );
 		\acfe_update_setting( 'modules/post_types', false );
 		\acfe_update_setting( 'modules/ui', false );
+	}
+
+	/**
+	 * Register Custom Fields
+	 *
+	 * @link https://www.advancedcustomfields.com/resources/register-fields-via-php/#add-within-an-action
+	 *
+	 * @return void
+	 */
+	public function register_fields() {
+		\acf_add_local_field_group(
+			array(
+				'key'                   => 'group_skills_group',
+				'title'                 => __( 'Expertise', 'site-functionality' ),
+				'fields'                => array(
+					array(
+						'key'               => 'field_skills_group',
+						'label'             => __( 'Skills', 'site-functionality' ),
+						'name'              => 'skills_group',
+						'type'              => 'repeater',
+						'instructions'      => '',
+						'required'          => 0,
+						'conditional_logic' => 0,
+						'wrapper'           => array(
+							'width' => '',
+							'class' => '',
+							'id'    => '',
+						),
+						'collapsed'         => 'field_section',
+						'min'               => 0,
+						'max'               => 0,
+						'layout'            => 'row',
+						'button_label'      => __( 'Add Section', 'site-functionality' ),
+						'sub_fields'        => array(
+							array(
+								'key'               => 'field_section',
+								'label'             => __( 'Section', 'site-functionality' ),
+								'name'              => 'section',
+								'type'              => 'text',
+								'instructions'      => '',
+								'required'          => 0,
+								'conditional_logic' => 0,
+								'wrapper'           => array(
+									'width' => '',
+									'class' => '',
+									'id'    => '',
+								),
+								'default_value'     => '',
+								'placeholder'       => '',
+								'prepend'           => '',
+								'append'            => '',
+								'maxlength'         => '',
+							),
+							array(
+								'key'               => 'field_skills',
+								'label'             => __( 'Skills', 'site-functionality' ),
+								'name'              => 'skills',
+								'type'              => 'repeater',
+								'instructions'      => '',
+								'required'          => 0,
+								'conditional_logic' => 0,
+								'wrapper'           => array(
+									'width' => '',
+									'class' => '',
+									'id'    => '',
+								),
+								'collapsed'         => 'field_skill',
+								'min'               => 0,
+								'max'               => 0,
+								'layout'            => 'table',
+								'button_label'      => __( 'Add Skill', 'site-functionality' ),
+								'sub_fields'        => array(
+									array(
+										'key'           => 'field_skill',
+										'label'         => __( 'Skill', 'site-functionality' ),
+										'name'          => 'skill',
+										'type'          => 'text',
+										'instructions'  => '',
+										'required'      => 0,
+										'conditional_logic' => 0,
+										'wrapper'       => array(
+											'width' => '',
+											'class' => '',
+											'id'    => '',
+										),
+										'default_value' => '',
+										'placeholder'   => '',
+										'prepend'       => '',
+										'append'        => '',
+										'maxlength'     => '',
+									),
+									array(
+										'key'           => 'field_rating',
+										'label'         => __( 'Rating', 'site-functionality' ),
+										'name'          => 'rating',
+										'type'          => 'range',
+										'instructions'  => '',
+										'required'      => 0,
+										'conditional_logic' => 0,
+										'wrapper'       => array(
+											'width' => '',
+											'class' => '',
+											'id'    => '',
+										),
+										'default_value' => '',
+										'min'           => '',
+										'max'           => 5,
+										'step'          => '',
+										'prepend'       => '',
+										'append'        => '',
+									),
+								),
+							),
+						),
+					),
+				),
+				'location'              => array(
+					array(
+						array(
+							'param'    => 'post_type',
+							'operator' => '==',
+							'value'    => 'page',
+						),
+					),
+				),
+				'menu_order'            => 0,
+				'position'              => 'normal',
+				'style'                 => 'default',
+				'label_placement'       => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen'        => '',
+				'active'                => 1,
+				'description'           => '',
+				'show_in_rest'          => 1,
+			)
+		);
+
+		\acf_add_local_field_group(
+			array(
+				'key'                   => 'group_project_details',
+				'title'                 => __( 'Project Details', 'site-functionality' ),
+				'fields'                => array(
+					array(
+						'key'               => 'field_company',
+						'label'             => __( 'Company', 'site-functionality' ),
+						'name'              => 'company',
+						'type'              => 'text',
+						'instructions'      => '',
+						'required'          => 0,
+						'conditional_logic' => 0,
+						'wrapper'           => array(
+							'width' => '',
+							'class' => '',
+							'id'    => '',
+						),
+						'default_value'     => '',
+						'placeholder'       => '',
+						'prepend'           => '',
+						'append'            => '',
+						'maxlength'         => '',
+					),
+					array(
+						'key'               => 'field_url',
+						'label'             => __( 'URL', 'site-functionality' ),
+						'name'              => 'url',
+						'type'              => 'url',
+						'instructions'      => '',
+						'required'          => 0,
+						'conditional_logic' => 0,
+						'wrapper'           => array(
+							'width' => '',
+							'class' => '',
+							'id'    => '',
+						),
+						'default_value'     => '',
+						'placeholder'       => '',
+					),
+					array(
+						'key'               => 'field_location',
+						'label'             => __( 'Location', 'site-functionality' ),
+						'name'              => 'location',
+						'type'              => 'text',
+						'instructions'      => '',
+						'required'          => 0,
+						'conditional_logic' => 0,
+						'wrapper'           => array(
+							'width' => '',
+							'class' => '',
+							'id'    => '',
+						),
+						'default_value'     => '',
+						'placeholder'       => '',
+						'prepend'           => '',
+						'append'            => '',
+						'maxlength'         => '',
+					),
+					array(
+						'key'               => 'field_start_date',
+						'label'             => __( 'Start Date', 'site-functionality' ),
+						'name'              => 'start_date',
+						'type'              => 'date_picker',
+						'instructions'      => '',
+						'required'          => 0,
+						'conditional_logic' => 0,
+						'wrapper'           => array(
+							'width' => '',
+							'class' => '',
+							'id'    => '',
+						),
+						'display_format'    => 'm/d/Y',
+						'return_format'     => 'd/m/Y',
+						'first_day'         => 1,
+					),
+					array(
+						'key'               => 'field_end_date',
+						'label'             => __( 'End Date', 'site-functionality' ),
+						'name'              => 'end_date',
+						'type'              => 'date_picker',
+						'instructions'      => '',
+						'required'          => 0,
+						'conditional_logic' => 0,
+						'wrapper'           => array(
+							'width' => '',
+							'class' => '',
+							'id'    => '',
+						),
+						'display_format'    => 'm/d/Y',
+						'return_format'     => 'd/m/Y',
+						'first_day'         => 1,
+					),
+					array(
+						'key'               => 'field_clients',
+						'label'             => __( 'Clients', 'site-functionality' ),
+						'name'              => 'clients',
+						'type'              => 'repeater',
+						'instructions'      => '',
+						'required'          => 0,
+						'conditional_logic' => 0,
+						'wrapper'           => array(
+							'width' => '',
+							'class' => '',
+							'id'    => '',
+						),
+						'collapsed'         => 'field_client_name',
+						'min'               => 0,
+						'max'               => 0,
+						'layout'            => 'table',
+						'button_label'      => '',
+						'sub_fields'        => array(
+							array(
+								'key'               => 'field_client_name',
+								'label'             => __( 'Name', 'site-functionality' ),
+								'name'              => 'client_name',
+								'type'              => 'text',
+								'instructions'      => '',
+								'required'          => 0,
+								'conditional_logic' => 0,
+								'wrapper'           => array(
+									'width' => '',
+									'class' => '',
+									'id'    => '',
+								),
+								'default_value'     => '',
+								'placeholder'       => '',
+								'prepend'           => '',
+								'append'            => '',
+								'maxlength'         => '',
+							),
+							array(
+								'key'               => 'field_client_url',
+								'label'             => __( 'URL', 'site-functionality' ),
+								'name'              => 'client_url',
+								'type'              => 'url',
+								'instructions'      => '',
+								'required'          => 0,
+								'conditional_logic' => 0,
+								'wrapper'           => array(
+									'width' => '',
+									'class' => '',
+									'id'    => '',
+								),
+								'default_value'     => '',
+								'placeholder'       => '',
+							),
+						),
+					),
+				),
+				'location'              => array(
+					array(
+						array(
+							'param'    => 'post_type',
+							'operator' => '==',
+							'value'    => 'jetpack-portfolio',
+						),
+					),
+					array(
+						array(
+							'param'    => 'post_type',
+							'operator' => '==',
+							'value'    => 'project',
+						),
+					),
+				),
+				'menu_order'            => 0,
+				'position'              => 'normal',
+				'style'                 => 'default',
+				'label_placement'       => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen'        => '',
+				'active'                => 1,
+				'description'           => '',
+				'show_in_rest'          => 1,
+			)
+		);
 	}
 }
