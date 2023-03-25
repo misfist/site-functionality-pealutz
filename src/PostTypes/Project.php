@@ -30,7 +30,7 @@ class Project extends PostType {
 		'has_archive' => false,
 		'with_front'  => false,
 		'rest_base'   => 'project',
-		'supports'    => array( 'title', 'editor', 'thumbnail', 'custom-fields', 'external-links' ),
+		'supports'    => array( 'title', 'editor', 'excerpt', 'thumbnail', 'custom-fields', 'external-links' ),
 	);
 
 	/**
