@@ -40,6 +40,10 @@ class CustomFields extends Base {
 		\add_action( 'acf/init', array( $this, 'acf_settings' ) );
 		\add_action( 'acfe/init', array( $this, 'acfe_settings' ) );
 		\add_action( 'acf/init', array( $this, 'register_fields' ) );
+		if ( function_exists( '\acf_register_block_type' ) ) {
+			\add_action( 'acf/init', array( $this, 'register_blocks' ) );
+		}
+		\add_action( 'acf/init', array( $this, 'register_block_fields' ) );
 	}
 
 	/**
@@ -282,7 +286,7 @@ class CustomFields extends Base {
 							'id'    => '',
 						),
 						'display_format'    => 'm/d/Y',
-						'return_format'     => 'd/m/Y',
+						'return_format'     => 'F Y',
 						'first_day'         => 1,
 					),
 					array(
@@ -299,7 +303,7 @@ class CustomFields extends Base {
 							'id'    => '',
 						),
 						'display_format'    => 'm/d/Y',
-						'return_format'     => 'd/m/Y',
+						'return_format'     => 'F Y',
 						'first_day'         => 1,
 					),
 					array(
@@ -384,6 +388,211 @@ class CustomFields extends Base {
 				'active'                => 1,
 				'description'           => '',
 				'show_in_rest'          => 1,
+			)
+		);
+	}
+
+	/**
+	 * Register ACF Blocks
+	 * 
+	 * @link https://www.advancedcustomfields.com/resources/acf_register_block_type/
+	 *
+	 * @return void
+	 */
+	public function register_blocks() {
+		\acf_register_block_type(
+			array(
+				'name'            => 'expertise',
+				'title'           => __( 'Expertise', 'site-functionality' ),
+				'active'          => true,
+				'description'     => '',
+				'category'        => 'common',
+				'icon'            => 'list-view',
+				'keywords'        => array(
+					'skills',
+					'list',
+					'expertise',
+				),
+				'post_types'      => array(
+					'page',
+					'project',
+				),
+				'mode'            => 'preview',
+				'align'           => '',
+				'align_text'      => '',
+				'align_content'   => 'top',
+				'render_template' => 'inc/blocks/templates/expertise.php',
+				'render_callback' => '',
+				'enqueue_style'   => '',
+				'enqueue_script'  => '',
+				'enqueue_assets'  => '',
+				'supports'        => array(
+					'anchor'        => true,
+					'align'         => true,
+					'align_text'    => true,
+					'align_content' => true,
+					'full_height'   => false,
+					'mode'          => true,
+					'multiple'      => true,
+					'example'       => array(),
+					'jsx'           => true,
+				),
+			)
+		);
+	}
+
+	/**
+	 * Register Fields for ACF Block
+	 * 
+	 * @link @link https://www.advancedcustomfields.com/resources/register-fields-via-php/#add-within-an-action
+	 *
+	 * @return void
+	 */
+	public function register_block_fields() {
+		acf_add_local_field_group(
+			array(
+				'key'                   => 'group_expertise_block_fields',
+				'title'                 => __( 'Expertise', 'site-functionality' ),
+				'fields'                => array(
+					array(
+						'key'                           => 'field_skills_group',
+						'label'                         => __( 'Skills', 'site-functionality' ),
+						'name'                          => 'skills_group',
+						'aria-label'                    => '',
+						'type'                          => 'repeater',
+						'instructions'                  => '',
+						'required'                      => 0,
+						'conditional_logic'             => 0,
+						'wrapper'                       => array(
+							'width' => '',
+							'class' => '',
+							'id'    => '',
+						),
+						'acfe_repeater_stylised_button' => 0,
+						'layout'                        => 'row',
+						'pagination'                    => 1,
+						'rows_per_page'                 => 20,
+						'min'                           => 0,
+						'max'                           => 0,
+						'collapsed'                     => 'field_section',
+						'button_label'                  => __( 'Add Section', 'site-functionality' ),
+						'sub_fields'                    => array(
+							array(
+								'key'               => 'field_section',
+								'label'             => __( 'Section', 'site-functionality' ),
+								'name'              => 'section',
+								'aria-label'        => '',
+								'type'              => 'text',
+								'instructions'      => '',
+								'required'          => 0,
+								'conditional_logic' => 0,
+								'wrapper'           => array(
+									'width' => '',
+									'class' => '',
+									'id'    => '',
+								),
+								'default_value'     => '',
+								'placeholder'       => '',
+								'prepend'           => '',
+								'append'            => '',
+								'maxlength'         => '',
+								'parent_repeater'   => 'field_skills_group',
+							),
+							array(
+								'key'               => 'field_skills',
+								'label'             => __( 'Skills', 'site-functionality' ),
+								'name'              => 'skills',
+								'aria-label'        => '',
+								'type'              => 'repeater',
+								'instructions'      => '',
+								'required'          => 0,
+								'conditional_logic' => 0,
+								'wrapper'           => array(
+									'width' => '',
+									'class' => '',
+									'id'    => '',
+								),
+								'acfe_repeater_stylised_button' => 1,
+								'layout'            => 'table',
+								'pagination'        => 0,
+								'min'               => 0,
+								'max'               => 0,
+								'collapsed'         => '',
+								'button_label'      => 'Add Row',
+								'rows_per_page'     => 20,
+								'sub_fields'        => array(
+									array(
+										'key'             => 'field_skill',
+										'label'           => __( 'Skill', 'site-functionality' ),
+										'name'            => 'skill',
+										'aria-label'      => '',
+										'type'            => 'text',
+										'instructions'    => '',
+										'required'        => 0,
+										'conditional_logic' => 0,
+										'wrapper'         => array(
+											'width' => '',
+											'class' => '',
+											'id'    => '',
+										),
+										'default_value'   => '',
+										'maxlength'       => '',
+										'placeholder'     => '',
+										'prepend'         => '',
+										'append'          => '',
+										'parent_repeater' => 'field_skills',
+									),
+									array(
+										'key'             => 'field_rating',
+										'label'           => __( 'Rating', 'site-functionality' ),
+										'name'            => 'rating',
+										'aria-label'      => '',
+										'type'            => 'range',
+										'instructions'    => '',
+										'required'        => 0,
+										'conditional_logic' => 0,
+										'wrapper'         => array(
+											'width' => '',
+											'class' => '',
+											'id'    => '',
+										),
+										'default_value'   => '',
+										'min'             => 1,
+										'max'             => 10,
+										'step'            => '',
+										'prepend'         => '',
+										'append'          => '',
+										'parent_repeater' => 'field_skills',
+									),
+								),
+								'parent_repeater'   => 'field_skills_group',
+							),
+						),
+					),
+				),
+				'location'              => array(
+					array(
+						array(
+							'param'    => 'block',
+							'operator' => '==',
+							'value'    => 'acf/expertise',
+						),
+					),
+				),
+				'menu_order'            => 0,
+				'position'              => 'acf_after_title',
+				'style'                 => 'seamless',
+				'label_placement'       => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen'        => '',
+				'active'                => true,
+				'description'           => '',
+				'show_in_rest'          => 1,
+				'acfe_display_title'    => '',
+				'acfe_autosync'         => '',
+				'acfe_form'             => 0,
+				'acfe_meta'             => '',
+				'acfe_note'             => '',
 			)
 		);
 	}
