@@ -48,7 +48,7 @@ class Remote_Media extends Base {
 	 * @since 1.0.1
 	 * @var   string
 	 */
-	public const MENU_SLUG = 'site-settings';
+	protected string $menu_slug = 'site-settings';
 
 	/**
 	 * Option key for the remote media URL.
@@ -65,6 +65,14 @@ class Remote_Media extends Base {
 	 * @var   string
 	 */
 	protected string $remote_media_url = '';
+
+	/**
+	 * Option key for the enabled toggle.
+	 *
+	 * @since 1.0.1
+	 * @var   string
+	 */
+	protected string $remote_media_enabled_option = 'remote_media_enabled';
 
 	/**
 	 * Required capability to manage settings.
@@ -86,7 +94,7 @@ class Remote_Media extends Base {
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'init_settings' ) );
 
-		if ( 'local' === wp_get_environment_type() ) {
+		if ( 'production' !== wp_get_environment_type() && ! empty( $this->options[ $this->remote_media_enabled_option ] ) ) {
 			add_filter( 'upload_dir', array( $this, 'serve_remote_media' ) );
 		}
 	}
@@ -102,7 +110,7 @@ class Remote_Media extends Base {
 			esc_html__( 'Site Settings', 'site-functionality' ),
 			esc_html__( 'Site Settings', 'site-functionality' ),
 			$this->capabilities,
-			self::MENU_SLUG,
+			$this->menu_slug,
 			array( $this, 'render_page' ),
 			1
 		);
@@ -121,14 +129,22 @@ class Remote_Media extends Base {
 			self::OPTION_NAME . '_section',
 			'',
 			false,
-			self::MENU_SLUG
+			$this->menu_slug
 		);
 
 		add_settings_field(
-			'remote_media_url',
-			__( 'Serve Media from Remote URL', 'site-functionality' ),
+			$this->remote_media_enabled_option,
+			__( 'Enable Remote Media', 'site-functionality' ),
+			array( $this, 'render_remote_media_enabled' ),
+			$this->menu_slug,
+			self::OPTION_NAME . '_section'
+		);
+
+		add_settings_field(
+			$this->remote_media_option,
+			__( 'Remote Media URL', 'site-functionality' ),
 			array( $this, 'render_remote_media_url' ),
-			self::MENU_SLUG,
+			$this->menu_slug,
 			self::OPTION_NAME . '_section'
 		);
 	}
@@ -149,11 +165,31 @@ class Remote_Media extends Base {
 			<form action="options.php" method="post">
 				<?php
 				settings_fields( self::OPTION_NAME );
-				do_settings_sections( self::MENU_SLUG );
+				do_settings_sections( $this->menu_slug );
 				submit_button();
 				?>
 			</form>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Render the enabled toggle field.
+	 *
+	 * @since  1.0.1
+	 * @return void
+	 */
+	public function render_remote_media_enabled(): void {
+		$enabled = ! empty( $this->options[ $this->remote_media_enabled_option ] );
+		?>
+		<input
+			type="checkbox"
+			id="<?php echo esc_attr( $this->remote_media_enabled_option ); ?>"
+			name="<?php echo esc_attr( self::OPTION_NAME . '[' . $this->remote_media_enabled_option . ']' ); ?>"
+			value="1"
+			<?php checked( $enabled ); ?>
+		/>
+		<p class="description"><?php esc_html_e( 'Has no effect on production environments.', 'site-functionality' ); ?></p>
 		<?php
 	}
 
@@ -184,7 +220,7 @@ class Remote_Media extends Base {
 	 * @return array
 	 */
 	public function serve_remote_media( array $dirs ): array {
-		$remote = $this->options[ $this->remote_media_option ] ?? '';
+		$remote = $this->options[ $this->remote_media_option ] ?? $this->remote_media_url;
 
 		if ( ! $remote ) {
 			return $dirs;
