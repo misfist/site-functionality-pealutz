@@ -1,7 +1,6 @@
 <?php
 /**
- * Functions to register client-side assets (scripts and stylesheets) for the
- * Gutenberg block.
+ * Block registration and editor integration.
  *
  * @package site-functionality
  */
