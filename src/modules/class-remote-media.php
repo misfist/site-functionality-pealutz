@@ -75,6 +75,20 @@ class Remote_Media extends Base {
 	protected string $remote_media_enabled_option = 'remote_media_enabled';
 
 	/**
+	 * Environments on which remote media serving is permitted.
+	 *
+	 * Filterable via the `site_functionality_remote_media_environments` filter.
+	 *
+	 * @since 1.0.1
+	 * @var   array
+	 */
+	protected array $enabled_environments = array(
+		'local',
+		'development',
+		'staging',
+	);
+
+	/**
 	 * Required capability to manage settings.
 	 *
 	 * @since 1.0.1
@@ -89,12 +103,13 @@ class Remote_Media extends Base {
 	 * @return void
 	 */
 	public function init(): void {
-		$this->options = (array) get_option( self::OPTION_NAME, array() );
+		$this->options             = (array) get_option( self::OPTION_NAME, array() );
+		$this->enabled_environments = (array) apply_filters( 'site_functionality_remote_media_environments', $this->enabled_environments );
 
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'init_settings' ) );
 
-		if ( 'production' !== wp_get_environment_type() && ! empty( $this->options[ $this->remote_media_enabled_option ] ) ) {
+		if ( in_array( wp_get_environment_type(), $this->enabled_environments, true ) && ! empty( $this->options[ $this->remote_media_enabled_option ] ) ) {
 			add_filter( 'upload_dir', array( $this, 'serve_remote_media' ) );
 		}
 	}
@@ -189,7 +204,7 @@ class Remote_Media extends Base {
 			value="1"
 			<?php checked( $enabled ); ?>
 		/>
-		<p class="description"><?php esc_html_e( 'Has no effect on production environments.', 'site-functionality' ); ?></p>
+		<p class="description"><?php printf( esc_html__( 'Only active on: %s.', 'site-functionality' ), esc_html( implode( ', ', $this->enabled_environments ) ) ); ?></p>
 		<?php
 	}
 
@@ -233,5 +248,4 @@ class Remote_Media extends Base {
 
 		return $dirs;
 	}
-
 }
