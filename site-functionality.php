@@ -69,12 +69,7 @@ register_deactivation_hook( __FILE__, array( Deactivator::class, 'deactivate' ) 
  * @since    1.0.0
  */
 function instantiate_site_functionality(): Site_Functionality {
-
-	$settings = new Settings();
-
-	$plugin = new Site_Functionality( $settings );
-
-	return $plugin;
+	return new Site_Functionality();
 }
 
 /**

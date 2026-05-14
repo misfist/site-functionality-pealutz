@@ -8,9 +8,7 @@ class ComposerStaticInit79748fcebbe0b4d5a437ef9bea3d53bb
 {
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Site_Functionality\\App\\Admin\\Admin_Assets' => __DIR__ . '/../..' . '/src/app/admin/class-admin-assets.php',
         'Site_Functionality\\App\\Blocks\\Blocks' => __DIR__ . '/../..' . '/src/app/blocks/class-blocks.php',
-        'Site_Functionality\\App\\Frontend\\Frontend_Assets' => __DIR__ . '/../..' . '/src/app/frontend/class-frontend-assets.php',
         'Site_Functionality\\App\\Post_Types\\Post_Types' => __DIR__ . '/../..' . '/src/app/post-types/class-post-types.php',
         'Site_Functionality\\App\\Post_Types\\Publication' => __DIR__ . '/../..' . '/src/app/post-types/class-publication.php',
         'Site_Functionality\\App\\Taxonomies\\Publication_Type' => __DIR__ . '/../..' . '/src/app/taxonomies/class-publication-type.php',
@@ -22,7 +20,6 @@ class ComposerStaticInit79748fcebbe0b4d5a437ef9bea3d53bb
         'Site_Functionality\\Common\\WP_Includes\\Deactivator' => __DIR__ . '/../..' . '/src/common/wp-includes/class-deactivator.php',
         'Site_Functionality\\Modules\\Modules' => __DIR__ . '/../..' . '/src/modules/class-modules.php',
         'Site_Functionality\\Modules\\Remote_Media' => __DIR__ . '/../..' . '/src/modules/class-remote-media.php',
-        'Site_Functionality\\Settings' => __DIR__ . '/../..' . '/src/class-settings.php',
         'Site_Functionality\\Site_Functionality' => __DIR__ . '/../..' . '/src/class-site-functionality.php',
     );
 
