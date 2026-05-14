@@ -15,7 +15,6 @@ namespace Site_Functionality;
 
 use Site_Functionality\App\Admin\Admin_Assets;
 use Site_Functionality\App\Frontend\Frontend_Assets;
-use Site_Functionality\Common\WP_Includes\I18n;
 use Site_Functionality\App\Post_Types\Post_Types;
 use Site_Functionality\App\Taxonomies\Taxonomies;
 use Site_Functionality\App\Blocks\Blocks;
@@ -47,26 +46,9 @@ class Site_Functionality {
 
 		$this->settings = $settings;
 
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_frontend_hooks();
 		$this->load_dependencies();
-	}
-
-	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the i18n class in order to set the domain and to register the hook
-	 * with WordPress.
-	 *
-	 * @since    1.0.0
-	 */
-	protected function set_locale(): void {
-
-		$plugin_i18n = new I18n();
-
-		add_action( 'init', array( $plugin_i18n, 'load_plugin_textdomain' ) );
-
 	}
 
 	/**
@@ -105,9 +87,9 @@ class Site_Functionality {
 	 * @since    1.0.0
 	 */
 	protected function load_dependencies(): void {
-		$post_types = new Post_Types( $this->settings );
-		$taxonomies = new Taxonomies( $this->settings );
-		$blocks	 = new Blocks( $this->settings );
+		$post_types = new Post_Types();
+		$taxonomies = new Taxonomies();
+		$blocks     = new Blocks();
 	}
 
 }

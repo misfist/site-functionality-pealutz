@@ -6,8 +6,6 @@
  */
 namespace Site_Functionality\Common\Abstracts;
 
-use Site_Functionality\Settings;
-
 /**
  * The Base class which can be extended by other classes to load in default methods
  *
@@ -15,13 +13,6 @@ use Site_Functionality\Settings;
  * @since 1.0.0
  */
 abstract class Base {
-
-	/**
-	 * The plugin settings.
-	 *
-	 * @var Settings
-	 */
-	protected Settings $settings;
 
 	/**
 	 * The data.
@@ -46,8 +37,7 @@ abstract class Base {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct( $settings ) {
-		$this->settings = $settings;
+	public function __construct() {
 		$this->init();
 	}
 
