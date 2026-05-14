@@ -15,7 +15,7 @@
  * Plugin Name:       Site Functionality
  * Plugin URI:        http://github.com/username/site-functionality/
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires PHP:      7.4
  * Author:            Misfist
  * Author URI:        https://github.com/misfist/site-functionality/
@@ -40,9 +40,11 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 $autoload = __DIR__ . '/vendor/autoload.php';
-if ( file_exists( $autoload ) ) {
-	require_once $autoload;
+if ( ! file_exists( $autoload ) ) {
+	error_log( 'Site Functionality: autoloader not found. Run composer dump-autoload.' );
+	return;
 }
+require_once $autoload;
 
 /**
  * Current plugin version.
