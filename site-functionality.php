@@ -14,10 +14,10 @@
  * @wordpress-plugin
  * Plugin Name:       Site Functionality
  * Plugin URI:        http://github.com/username/site-functionality/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       Custom site functionality.
  * Version:           1.0.1
  * Requires PHP:      7.4
- * Author:            Misfist
+ * Author:            P. E. A.
  * Author URI:        https://github.com/misfist/site-functionality/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt

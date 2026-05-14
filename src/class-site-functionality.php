@@ -18,6 +18,7 @@ use Site_Functionality\App\Frontend\Frontend_Assets;
 use Site_Functionality\App\Post_Types\Post_Types;
 use Site_Functionality\App\Taxonomies\Taxonomies;
 use Site_Functionality\App\Blocks\Blocks;
+use Site_Functionality\Modules\Modules;
 
 /**
  * Hooks the plugin's classes to WordPress's actions and filters.
@@ -90,6 +91,7 @@ class Site_Functionality {
 		$post_types = new Post_Types();
 		$taxonomies = new Taxonomies();
 		$blocks     = new Blocks();
+		$modules    = new Modules();
 	}
 
 }
