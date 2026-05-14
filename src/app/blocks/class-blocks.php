@@ -1,7 +1,6 @@
 <?php
 /**
- * Functions to register client-side assets (scripts and stylesheets) for the
- * Gutenberg block.
+ * Block registration and editor integration.
  *
  * @package site-functionality
  */
@@ -21,9 +20,8 @@ class Blocks extends Base {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct( $settings ) {
-		parent::__construct( $settings );
-		$this->init();
+	public function __construct() {
+		parent::__construct();
 	}
 
 	/**

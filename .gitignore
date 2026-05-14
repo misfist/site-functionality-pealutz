@@ -43,7 +43,10 @@ scratch
 src/vendor-prefixed/
 wp-content/
 wordpress
-/vendor/
+/vendor/*
+!/vendor/autoload.php
+!/vendor/composer/
+!/vendor/composer/**
 /bin/
 /tests/
 logs

@@ -21,16 +21,9 @@
         "optimize-autoloader": true
     },
     "autoload": {
-        "psr-4": {
-            "Site_Functionality\\": "src/"
-        },
         "classmap": [
-            "src"
-        ],
-        "psr-0": {
-            "Site_Functionality\\": "src/"
-        },
-        "files": []
+            "src/"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

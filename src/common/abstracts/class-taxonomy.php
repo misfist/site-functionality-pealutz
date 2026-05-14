@@ -26,9 +26,8 @@ abstract class Taxonomy extends Base {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct( $settings ) {
-		parent::__construct( $settings );
-		$this->init();
+	public function __construct() {
+		parent::__construct();
 	}
 
 	/**
