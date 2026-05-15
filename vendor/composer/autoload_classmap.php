@@ -8,9 +8,11 @@ $baseDir = dirname($vendorDir);
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Site_Functionality\\App\\Blocks\\Blocks' => $baseDir . '/src/app/blocks/class-blocks.php',
+    'Site_Functionality\\App\\Post_Types\\Page' => $baseDir . '/src/app/post-types/class-page.php',
     'Site_Functionality\\App\\Post_Types\\Post_Types' => $baseDir . '/src/app/post-types/class-post-types.php',
-    'Site_Functionality\\App\\Post_Types\\Publication' => $baseDir . '/src/app/post-types/class-publication.php',
-    'Site_Functionality\\App\\Taxonomies\\Publication_Type' => $baseDir . '/src/app/taxonomies/class-publication-type.php',
+    'Site_Functionality\\App\\Post_Types\\Project' => $baseDir . '/src/app/post-types/class-project.php',
+    'Site_Functionality\\App\\Taxonomies\\Project_Tag' => $baseDir . '/src/app/taxonomies/class-project-tag.php',
+    'Site_Functionality\\App\\Taxonomies\\Project_Type' => $baseDir . '/src/app/taxonomies/class-project-type.php',
     'Site_Functionality\\App\\Taxonomies\\Taxonomies' => $baseDir . '/src/app/taxonomies/class-taxonomies.php',
     'Site_Functionality\\Common\\Abstracts\\Base' => $baseDir . '/src/common/abstracts/class-base.php',
     'Site_Functionality\\Common\\Abstracts\\Post_Type' => $baseDir . '/src/common/abstracts/class-post-type.php',

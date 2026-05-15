@@ -8,9 +8,8 @@
 namespace Site_Functionality\App\Post_Types;
 
 use Site_Functionality\Common\Abstracts\Base;
-use Site_Functionality\App\Post_Types\Publication;
-use Site_Functionality\App\Post_Types\Issue;
-// use \TenUp\ContentConnect\Plugin;
+use Site_Functionality\App\Post_Types\Project;
+use Site_Functionality\App\Post_Types\Page;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -34,7 +33,8 @@ class Post_Types extends Base {
 	 * @return void
 	 */
 	public function init(): void {
-		// new Publication( $this->settings );
+		$project = new Project();
+		$page    = new Page();
 
 		\add_filter( 'page-links-to-post-types', array( $this, 'external_links' ) );
 	}
@@ -42,16 +42,15 @@ class Post_Types extends Base {
 	/**
 	 * Modify Post Types
 	 * If post type supports $feature, enable Page Links To
-	 * 
+	 *
 	 * @link https://wordpress.org/plugins/page-links-to/
 	 * @link https://github.com/markjaquith/page-links-to/blob/master/classes/plugin.php#L517-L519
 	 *
 	 * @param array $post_types
 	 * @return array
 	 */
-	public function external_links( $post_types ) : array {
+	public function external_links( $post_types ): array {
 		$feature = 'external-links';
 		return \get_post_types_by_support( $feature );
 	}
-
 }

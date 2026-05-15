@@ -9,9 +9,11 @@ class ComposerStaticInit79748fcebbe0b4d5a437ef9bea3d53bb
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Site_Functionality\\App\\Blocks\\Blocks' => __DIR__ . '/../..' . '/src/app/blocks/class-blocks.php',
+        'Site_Functionality\\App\\Post_Types\\Page' => __DIR__ . '/../..' . '/src/app/post-types/class-page.php',
         'Site_Functionality\\App\\Post_Types\\Post_Types' => __DIR__ . '/../..' . '/src/app/post-types/class-post-types.php',
-        'Site_Functionality\\App\\Post_Types\\Publication' => __DIR__ . '/../..' . '/src/app/post-types/class-publication.php',
-        'Site_Functionality\\App\\Taxonomies\\Publication_Type' => __DIR__ . '/../..' . '/src/app/taxonomies/class-publication-type.php',
+        'Site_Functionality\\App\\Post_Types\\Project' => __DIR__ . '/../..' . '/src/app/post-types/class-project.php',
+        'Site_Functionality\\App\\Taxonomies\\Project_Tag' => __DIR__ . '/../..' . '/src/app/taxonomies/class-project-tag.php',
+        'Site_Functionality\\App\\Taxonomies\\Project_Type' => __DIR__ . '/../..' . '/src/app/taxonomies/class-project-type.php',
         'Site_Functionality\\App\\Taxonomies\\Taxonomies' => __DIR__ . '/../..' . '/src/app/taxonomies/class-taxonomies.php',
         'Site_Functionality\\Common\\Abstracts\\Base' => __DIR__ . '/../..' . '/src/common/abstracts/class-base.php',
         'Site_Functionality\\Common\\Abstracts\\Post_Type' => __DIR__ . '/../..' . '/src/common/abstracts/class-post-type.php',

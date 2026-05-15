@@ -3,7 +3,7 @@
         'name' => 'misfist/site-functionality',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '975d4aa37545cc9defae02584c8f9826ef917165',
+        'reference' => '6b673be4cd02341b60133d58a69b7fdff26e51ac',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'misfist/site-functionality' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '975d4aa37545cc9defae02584c8f9826ef917165',
+            'reference' => '6b673be4cd02341b60133d58a69b7fdff26e51ac',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
