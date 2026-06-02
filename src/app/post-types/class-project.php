@@ -218,7 +218,6 @@ class Project extends Post_Type {
 						'ui'                => 1,
 					),
 				),
-				∂,
 			),
 		);
 
