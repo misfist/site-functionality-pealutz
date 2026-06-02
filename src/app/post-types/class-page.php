@@ -7,14 +7,14 @@
  */
 namespace Site_Functionality\App\Post_Types;
 
-use Site_Functionality\Common\Abstracts\Post_Type;
+use Site_Functionality\Common\Abstracts\Base;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Page extends Post_Type {
+class Page extends Base {
 
 	/**
 	 * Post_Type data
@@ -38,7 +38,6 @@ class Page extends Post_Type {
 	 */
 	public function init(): void {
 		parent::init();
-		// \add_action( 'init', array( $this, 'register_meta' ) );
 		\add_action( 'acf/init', array( $this, 'register_fields' ) );
 	}
 
@@ -181,21 +180,4 @@ class Page extends Post_Type {
 		acf_add_local_field_group( $args );
 	}
 
-	/**
-	 * Register Meta
-	 *
-	 * @return void
-	 */
-	public function register_meta(): void {}
-
-	/**
-	 * Register custom query vars
-	 *
-	 * @link https://developer.wordproject.org/reference/hooks/query_vars/
-	 *
-	 * @param array $vars The array of available query variables
-	 */
-	public function register_query_vars( $vars ): array {
-		return $vars;
-	}
 }
