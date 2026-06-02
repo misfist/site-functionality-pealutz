@@ -40,8 +40,8 @@ class Project_Type extends Taxonomy {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct( $settings ) {
-		parent::__construct( $settings );
+	public function __construct() {
+		parent::__construct();
 
 		\add_action( 'init', array( $this, 'rewrite_rules' ), 10, 0 );
 	}
