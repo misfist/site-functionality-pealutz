@@ -22,17 +22,18 @@ class Project_Type extends Taxonomy {
 	 * Taxonomy data
 	 */
 	public static $taxonomy = array(
-		'id'          => 'project_type',
-		'title'       => 'Project Types',
-		'singular'    => 'Project Type',
-		'menu'        => 'Types',
-		'post_types'  => array( 
-			'project'
+		'id'           => 'project_type',
+		'title'        => 'Project Types',
+		'singular'     => 'Project Type',
+		'menu'         => 'Types',
+		'post_types'   => array(
+			'project',
 		),
-		'has_archive' => false,
-		'archive'     => false,
-		'with_front'  => false,
-		'rest'        => 'project-types',
+		'hierarchical' => true,
+		'has_archive'  => false,
+		'archive'      => false,
+		'with_front'   => false,
+		'rest'         => 'project-types',
 	);
 
 	/**
@@ -54,5 +55,4 @@ class Project_Type extends Taxonomy {
 	 * @return void
 	 */
 	public function rewrite_rules(): void {}
-
 }

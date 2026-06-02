@@ -20,19 +20,20 @@ class Project extends Post_Type {
 	 * Post_Type data
 	 */
 	public static $post_type = array(
-		'id'          => 'project',
-		'slug'        => 'project',
-		'menu'        => 'Projects',
-		'title'       => 'Projects',
-		'singular'    => 'Project',
-		'icon'        => 'dashicons-book-alt',
-		'taxonomies'  => array(
+		'id'           => 'project',
+		'slug'         => 'project',
+		'menu'         => 'Projects',
+		'title'        => 'Projects',
+		'singular'     => 'Project',
+		'icon'         => 'dashicons-book-alt',
+		'taxonomies'   => array(
 			'project_type',
 		),
-		'has_archive' => false,
-		'with_front'  => false,
-		'rest_base'   => 'projects',
-		'supports'    => array(
+		'hierarchical' => true,
+		'has_archive'  => false,
+		'with_front'   => false,
+		'rest_base'    => 'projects',
+		'supports'     => array(
 			'title',
 			'editor',
 			'author',
