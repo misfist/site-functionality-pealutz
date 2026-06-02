@@ -19,4 +19,4 @@ jobs:
         run: ssh-keyscan -H -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }}  >> ~/.ssh/known_hosts
 
       - name: Deploy with rsync
-        run: rsync -avz -e 'ssh -p ${{ secrets.SSH_PORT }}' --include='vendor/autoload.php' --include='vendor/composer/autoload_real.php' --include='vendor/composer/autoload_static.php' --filter=':- .gitignore' --exclude='.git' --delete ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}/wp-content/plugins/site-functionality/
+        run: rsync -avz -e 'ssh -p ${{ secrets.SSH_PORT }}' --include='vendor/' --include='vendor/composer/' --include='vendor/autoload.php' --include='vendor/composer/autoload_real.php' --include='vendor/composer/autoload_static.php' --filter=':- .gitignore' --exclude='.git' --delete ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.WORK_DIR }}/wp-content/plugins/site-functionality/
