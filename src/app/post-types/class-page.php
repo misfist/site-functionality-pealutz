@@ -187,4 +187,15 @@ class Page extends Post_Type {
 	 * @return void
 	 */
 	public function register_meta(): void {}
+
+	/**
+	 * Register custom query vars
+	 *
+	 * @link https://developer.wordproject.org/reference/hooks/query_vars/
+	 *
+	 * @param array $vars The array of available query variables
+	 */
+	public function register_query_vars( $vars ): array {
+		return $vars;
+	}
 }
