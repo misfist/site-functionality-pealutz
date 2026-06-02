@@ -58,17 +58,8 @@ class Project extends Post_Type {
 	 */
 	public function init(): void {
 		parent::init();
-		// \add_action( 'init', array( $this, 'register_meta' ) );
-		\add_action( 'acf/init', array( $this, 'register_fields' ) );
-	}
 
-	/**
-	 * Register Custom Fields
-	 *
-	 * @return void
-	 */
-	public function register_fields(): void {
-		$fields = array(
+		$this->fields = array(
 			array(
 				'key'               => 'field_company',
 				'label'             => __( 'Company', 'site-functionality' ),
@@ -222,10 +213,21 @@ class Project extends Post_Type {
 			),
 		);
 
+		\add_action( 'acf/init', array( $this, 'register_fields' ) );
+		\add_action( 'init', array( $this, 'register_meta' ) );
+		\add_action( 'init', array( $this, 'register_bindings' ) );
+	}
+
+	/**
+	 * Register Custom Fields
+	 *
+	 * @return void
+	 */
+	public function register_fields(): void {
 		$args = array(
 			'key'                   => 'group_project_details',
 			'title'                 => __( 'Project Details', 'site-functionality' ),
-			'fields'                => $fields,
+			'fields'                => $this->fields,
 			'location'              => array(
 				array(
 					array(
@@ -250,33 +252,120 @@ class Project extends Post_Type {
 
 	/**
 	 * Register Meta
+	 * 
+	 * @since 1.0.11
 	 *
 	 * @return void
 	 */
-	public function register_meta(): void {}
+	public function register_meta(): void {
+		foreach ( $this->fields as $field ) {
+			if ( 'repeater' === $field['type'] ) {
+				continue;
+			}
 
-	/**
-	 * Modify Post Content
-	 *
-	 * @link https://developer.wordproject.org/reference/hooks/the_content/
-	 *
-	 * @param string $content
-	 * @return string $content
-	 */
-	public function modify_post_content( $content ): string {
-		return $content;
+			\register_post_meta(
+				self::$post_type['id'],
+				$field['name'],
+				array(
+					'type'         => 'string',
+					'single'       => true,
+					'show_in_rest' => true,
+				)
+			);
+		}
 	}
 
 	/**
-	 * Modify Post Title
+	 * Register Block Bindings
+	 * 
+	 * @since 1.0.11
 	 *
-	 * @link https://developer.wordproject.org/reference/hooks/the_title/
-	 *
-	 * @param string $content
-	 * @return string $content
+	 * @return void
 	 */
-	public function modify_post_title( $title ): string {
-		return $title;
+	public function register_bindings(): void {
+		\register_block_bindings_source(
+			'site-functionality/project-date',
+			array(
+				'label'              => __( 'Project Date', 'site-functionality' ),
+				'get_value_callback' => array( $this, 'get_project_date_value' ),
+				'uses_context'       => array( 'postId', 'postType' ),
+			)
+		);
+
+		\register_block_bindings_source(
+			'site-functionality/project-company',
+			array(
+				'label'              => __( 'Project Company', 'site-functionality' ),
+				'get_value_callback' => array( $this, 'get_project_company_value' ),
+				'uses_context'       => array( 'postId', 'postType' ),
+			)
+		);
+	}
+
+	/**
+	 * Get Project Date Binding Value
+	 * 
+	 * @since 1.0.11
+	 *
+	 * @param array     $args   Binding args (e.g. [ 'key' => 'start_date' ]).
+	 * @param \WP_Block $block  The block instance.
+	 * @return string|null
+	 */
+	public function get_project_date_value( array $args, \WP_Block $block ): ?string {
+		$post_id = $block->context['postId'] ?? \get_the_ID();
+		$key     = $args['key'] ?? '';
+
+		if ( empty( $key ) ) {
+			return null;
+		}
+
+		$value = \get_post_meta( $post_id, $key, true );
+
+		if ( empty( $value ) ) {
+			return null;
+		}
+
+		$timestamp = \DateTime::createFromFormat( 'Ymd', $value );
+
+		if ( false === $timestamp ) {
+			return $value;
+		}
+
+		$format = \get_option( 'date_format', 'F Y' );
+
+		return $timestamp->format( $format );
+	}
+
+	/**
+	 * Get Project Company Binding Value
+	 *
+	 * Returns the company name linked to the project URL, or plain name if no URL is set.
+	 * 
+	 * @since 1.0.11
+	 *
+	 * @param array     $args   Binding args.
+	 * @param \WP_Block $block  The block instance.
+	 * @return string|null
+	 */
+	public function get_project_company_value( array $args, \WP_Block $block ): ?string {
+		$post_id = $block->context['postId'] ?? \get_the_ID();
+		$company = \get_post_meta( $post_id, 'company', true );
+
+		if ( empty( $company ) ) {
+			return null;
+		}
+
+		$url = \get_post_meta( $post_id, 'url', true );
+
+		if ( empty( $url ) ) {
+			return \esc_html( $company );
+		}
+
+		return sprintf(
+			'<a href="%s">%s</a>',
+			\esc_url( $url ),
+			\esc_html( $company )
+		);
 	}
 
 	/**
