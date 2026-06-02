@@ -231,7 +231,7 @@ class Project extends Post_Type {
 					array(
 						'param'    => 'post_type',
 						'operator' => '==',
-						'value'    => self::POST_TYPE['id'],
+						'value'    => self::$post_type['id'],
 					),
 				),
 			),

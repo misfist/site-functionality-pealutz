@@ -163,7 +163,7 @@ class Page extends Post_Type {
 					array(
 						'param'    => 'post_type',
 						'operator' => '==',
-						'value'    => self::POST_TYPE['id'],
+						'value'    => $this->post_type['id'],
 					),
 				),
 			),
