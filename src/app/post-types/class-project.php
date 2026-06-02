@@ -22,7 +22,7 @@ class Project extends Post_Type {
 	public static $post_type = array(
 		'id'          => 'project',
 		'slug'        => 'project',
-		'menu'        => 'Project',
+		'menu'        => 'Projects',
 		'title'       => 'Projects',
 		'singular'    => 'Project',
 		'icon'        => 'dashicons-book-alt',
