@@ -216,6 +216,7 @@ class Project extends Post_Type {
 		\add_action( 'acf/init', array( $this, 'register_fields' ) );
 		\add_action( 'init', array( $this, 'register_meta' ) );
 		\add_action( 'init', array( $this, 'register_bindings' ) );
+		\add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
 	}
 
 	/**
@@ -299,6 +300,31 @@ class Project extends Post_Type {
 				'get_value_callback' => array( $this, 'get_project_company_value' ),
 				'uses_context'       => array( 'postId', 'postType' ),
 			)
+		);
+	}
+
+	/**
+	 * Enqueue Editor Assets
+	 *
+	 * @since 1.0.12
+	 *
+	 * @return void
+	 */
+	public function enqueue_editor_assets(): void {
+		$asset_path = \plugin_dir_path( __FILE__ ) . '../blocks/build/bindings.asset.php';
+
+		if ( ! file_exists( $asset_path ) ) {
+			return;
+		}
+
+		$asset_file = require $asset_path;
+
+		\wp_enqueue_script(
+			'site-functionality-bindings',
+			\plugin_dir_url( __FILE__ ) . '../blocks/build/bindings.js',
+			$asset_file['dependencies'],
+			$asset_file['version'],
+			true
 		);
 	}
 
