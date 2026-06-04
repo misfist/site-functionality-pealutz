@@ -56,10 +56,13 @@ class Project extends Post_Type {
 	 *
 	 * @return void
 	 */
-	public function init(): void {
-		parent::init();
-
-		$this->fields = array(
+	/**
+	 * Get field definitions (deferred so __() calls happen after init hook).
+	 *
+	 * @return array
+	 */
+	protected function get_fields(): array {
+		return array(
 			array(
 				'key'               => 'field_company',
 				'label'             => __( 'Company', 'site-functionality' ),
