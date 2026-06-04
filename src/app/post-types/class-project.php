@@ -50,19 +50,17 @@ class Project extends Post_Type {
 		'_links_to',
 		'_links_to_target',
 	);
+	
 
 	/**
 	 * Init
 	 *
 	 * @return void
 	 */
-	/**
-	 * Get field definitions (deferred so __() calls happen after init hook).
-	 *
-	 * @return array
-	 */
-	protected function get_fields(): array {
-		return array(
+	public function init(): void {
+		parent::init();
+
+		self::$fields = array(
 			array(
 				'key'               => 'field_company',
 				'label'             => __( 'Company', 'site-functionality' ),
@@ -216,7 +214,14 @@ class Project extends Post_Type {
 			),
 		);
 
-		\add_action( 'acf/init', array( $this, 'register_fields' ) );
+		error_log( print_r( function_exists( 'rwmb_meta' ), true ) );
+
+		if ( is_plugin_active( 'meta-box-aio/meta-box-aio.php' ) || function_exists( '\rwmb_meta' ) ) {
+			\add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields_mb' ) );
+		} else {
+			\add_action( 'acf/include_fields', array( $this, 'register_fields' ) );
+		}
+
 		\add_action( 'init', array( $this, 'register_meta' ) );
 		\add_action( 'init', array( $this, 'register_bindings' ) );
 		\add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
@@ -262,8 +267,101 @@ class Project extends Post_Type {
 	}
 
 	/**
+	 * Register Fields
+	 *
+	 * @param array $meta_boxes
+	 *
+	 * @return array
+	 */
+	public function register_fields_mb( array $meta_boxes ): array {
+		$meta_boxes[] = array(
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'show_in_rest'          => 1,
+			'allow_ai_access'       => false,
+			'post_types'            => array(
+				self::$post_type['id'],
+				'jetpack-portfolio',
+			),
+			'title'                 => __( 'Project Details', 'site-functionality' ),
+			'id'                    => 'acf_group_project_details',
+			''                      => array(
+				'relation' => 'AND',
+			),
+			'fields'                => array(
+				array(
+					'type' => 'text',
+					'name' => __( 'Company', 'site-functionality' ),
+					'id'   => 'company',
+				),
+				array(
+					'type' => 'url',
+					'name' => __( 'URL', 'site-functionality' ),
+					'id'   => 'url',
+				),
+				array(
+					'type' => 'text',
+					'name' => __( 'Location', 'site-functionality' ),
+					'id'   => 'location',
+				),
+				array(
+					'type'        => 'date',
+					'name'        => __( 'Start Date', 'site-functionality' ),
+					'id'          => 'start_date',
+					'js_options'  => array(
+						'dateFormat'      => 'mm/dd/yy',
+						'changeYear'      => true,
+						'yearRange'       => '-100:+100',
+						'changeMonth'     => true,
+						'showButtonPanel' => true,
+						'firstDay'        => 1,
+					),
+					'save_format' => 'Ymd',
+				),
+				array(
+					'type'        => 'date',
+					'name'        => __( 'End Date', 'site-functionality' ),
+					'id'          => 'end_date',
+					'js_options'  => array(
+						'dateFormat'      => 'mm/dd/yy',
+						'changeYear'      => true,
+						'yearRange'       => '-100:+100',
+						'changeMonth'     => true,
+						'showButtonPanel' => true,
+						'firstDay'        => 1,
+					),
+					'save_format' => 'Ymd',
+				),
+				array(
+					'type'       => 'group',
+					'name'       => __( 'Clients', 'site-functionality' ),
+					'id'         => 'clients',
+					'clone'      => true,
+					'sort_clone' => true,
+					'fields'     => array(
+						array(
+							'type'              => 'text',
+							'allow_in_bindings' => 1,
+							'name'              => __( 'Name', 'site-functionality' ),
+							'id'                => 'client_name',
+						),
+						array(
+							'type'              => 'url',
+							'allow_in_bindings' => 1,
+							'name'              => __( 'URL', 'site-functionality' ),
+							'id'                => 'client_url',
+						),
+					),
+				),
+			),
+		);
+
+		return $meta_boxes;
+	}
+
+	/**
 	 * Register Meta
-	 * 
+	 *
 	 * @since 1.0.11
 	 *
 	 * @return void
@@ -288,7 +386,7 @@ class Project extends Post_Type {
 
 	/**
 	 * Register Block Bindings
-	 * 
+	 *
 	 * @since 1.0.11
 	 *
 	 * @return void
@@ -340,7 +438,7 @@ class Project extends Post_Type {
 
 	/**
 	 * Get Project Date Binding Value
-	 * 
+	 *
 	 * @since 1.0.11
 	 *
 	 * @param array     $args   Binding args (e.g. [ 'key' => 'start_date' ]).
@@ -376,7 +474,7 @@ class Project extends Post_Type {
 	 * Get Project Company Binding Value
 	 *
 	 * Returns the company name linked to the project URL, or plain name if no URL is set.
-	 * 
+	 *
 	 * @since 1.0.11
 	 *
 	 * @param array     $args   Binding args.
