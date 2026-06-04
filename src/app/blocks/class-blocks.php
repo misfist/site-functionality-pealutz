@@ -82,6 +82,22 @@ class Blocks extends Base {
 	 *
 	 * @return void
 	 */
-	public function enqueue_blocks_scripts(): void {}
+	public function enqueue_blocks_scripts(): void {
+		$asset_path = __DIR__ . '/build/index.asset.php';
+
+		if ( ! file_exists( $asset_path ) ) {
+			return;
+		}
+
+		$asset_file = require $asset_path;
+
+		\wp_enqueue_script(
+			'site-functionality-blocks',
+			\plugins_url( 'build/index.js', __FILE__ ),
+			$asset_file['dependencies'],
+			$asset_file['version'],
+			true
+		);
+	}
 
 }
