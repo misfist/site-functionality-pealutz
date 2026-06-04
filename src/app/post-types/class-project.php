@@ -231,13 +231,20 @@ class Project extends Post_Type {
 		$args = array(
 			'key'                   => 'group_project_details',
 			'title'                 => __( 'Project Details', 'site-functionality' ),
-			'fields'                => $this->fields,
+			'fields'                => self::$fields,
 			'location'              => array(
 				array(
 					array(
 						'param'    => 'post_type',
 						'operator' => '==',
 						'value'    => self::$post_type['id'],
+					),
+				),
+				array(
+					array(
+						'param'    => 'post_type',
+						'operator' => '==',
+						'value'    => 'jetpack-portfolio',
 					),
 				),
 			),
@@ -262,7 +269,7 @@ class Project extends Post_Type {
 	 * @return void
 	 */
 	public function register_meta(): void {
-		foreach ( $this->fields as $field ) {
+		foreach ( self::$fields as $field ) {
 			if ( 'repeater' === $field['type'] ) {
 				continue;
 			}

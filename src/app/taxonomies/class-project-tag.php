@@ -22,17 +22,19 @@ class Project_Tag extends Taxonomy {
 	 * Taxonomy data
 	 */
 	public static $taxonomy = array(
-		'id'          => 'project_tag',
-		'title'       => 'Project Tags',
-		'singular'    => 'Project Tag',
-		'menu'        => 'Tags',
-		'post_types'  => array( 
-			'project'
+		'id'           => 'project_tag',
+		'title'        => 'Project Tags',
+		'singular'     => 'Project Tag',
+		'menu'         => 'Tags',
+		'post_types'   => array(
+			'project',
+			'page',
 		),
-		'has_archive' => false,
-		'archive'     => false,
-		'with_front'  => false,
-		'rest'        => 'project-tags',
+		'hierarchical' => true,
+		'has_archive'  => false,
+		'archive'      => false,
+		'with_front'   => false,
+		'rest'         => 'project-tags',
 	);
 
 	/**
@@ -54,5 +56,4 @@ class Project_Tag extends Taxonomy {
 	 * @return void
 	 */
 	public function rewrite_rules(): void {}
-
 }

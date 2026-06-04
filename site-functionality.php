@@ -15,7 +15,7 @@
  * Plugin Name:       Site Functionality
  * Plugin URI:        http://github.com/username/site-functionality/
  * Description:       Custom site functionality.
- * Version:           1.0.11
+ * Version:           1.0.12
  * Requires PHP:      8.2
  * Author:            P. E. A.
  * Author URI:        https://github.com/misfist/site-functionality/
