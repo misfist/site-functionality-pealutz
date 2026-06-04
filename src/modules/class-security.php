@@ -49,7 +49,8 @@ class Security extends Base {
 	function remove_wp_version_strings( string $src ): string {
 		global $wp_version;
 
-		parse_str( parse_url( $src, PHP_URL_QUERY ), $query );
+		$query_string = parse_url( $src, PHP_URL_QUERY ) ?? '';
+		parse_str( $query_string, $query );
 
 		if ( ! empty( $query['ver'] ) && $query['ver'] === $wp_version ) {
 			$src = remove_query_arg( 'ver', $src );
