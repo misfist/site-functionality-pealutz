@@ -417,17 +417,18 @@ class Project extends Post_Type {
 	 * @return void
 	 */
 	public function enqueue_editor_assets(): void {
-		$asset_path = \plugin_dir_path( __FILE__ ) . '../blocks/build/bindings.asset.php';
+		$asset_path = SITE_FUNCTIONALITY_PATH . '/blocks/build/bindings.asset.php';
 
 		if ( ! file_exists( $asset_path ) ) {
+			error_log( __METHOD__ . sprintf( ': Asset file not found: %s', $asset ) );
 			return;
 		}
 
-		$asset_file = require $asset_path;
+		$asset_file = include $asset_path;
 
 		\wp_enqueue_script(
 			'site-functionality-bindings',
-			\plugin_dir_url( __FILE__ ) . '../blocks/build/bindings.js',
+			SITE_FUNCTIONALITY_URL . 'blocks/build/bindings.js',
 			$asset_file['dependencies'],
 			$asset_file['version'],
 			true
