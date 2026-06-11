@@ -38,7 +38,12 @@ class Page extends Base {
 	 */
 	public function init(): void {
 		parent::init();
-		\add_action( 'acf/init', array( $this, 'register_fields' ) );
+
+		if ( is_plugin_active( 'meta-box-aio/meta-box-aio.php' )  || function_exists( '\rwmb_meta' ) ) {
+			\add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields_mb' ) );
+		} else {
+			\add_action( 'acf/include_fields', array( $this, 'register_fields' ) );
+		}
 	}
 
 	/**
@@ -152,8 +157,8 @@ class Page extends Base {
 				),
 			),
 		);
-		
-		$args   = array(
+
+		$args = array(
 			'key'                   => 'group_skills_group',
 			'title'                 => __( 'Expertise', 'site-functionality' ),
 			'fields'                => $fields,
@@ -162,7 +167,7 @@ class Page extends Base {
 					array(
 						'param'    => 'post_type',
 						'operator' => '==',
-						'value'    => $this->post_type['id'],
+						'value'    => self::$post_type['id'],
 					),
 				),
 			),
@@ -180,4 +185,53 @@ class Page extends Base {
 		acf_add_local_field_group( $args );
 	}
 
+	/**
+	 * Register Custom Fields
+	 *
+	 * @param array $meta_boxes
+	 *
+	 * @return array
+	 */
+	function register_fields_mb( array $meta_boxes ): array {
+		$meta_boxes[] = array(
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'post_types'            => array( self::$post_type['id'] ),
+			'title'                 => __( 'Expertise', 'site-functionality' ),
+			'id'                    => 'acf_group_skills_group',
+			''                      => array(
+				'relation' => 'AND',
+			),
+			'fields'                => array(
+				array(
+					'type'       => 'group',
+					'name'       => __( 'Skills', 'site-functionality' ),
+					'id'         => 'skills_group',
+					'clone'      => true,
+					'sort_clone' => true,
+					'add_button' => __( 'Add Section', 'site-functionality' ),
+					'fields'     => array(
+						array(
+							'type' => 'text',
+							'name' => __( 'Section', 'site-functionality' ),
+							'id'   => 'section',
+						),
+						array(
+							'type' => 'text',
+							'name' => __( 'Skill', 'site-functionality' ),
+							'id'   => 'skill',
+						),
+						array(
+							'type' => 'range',
+							'max'  => 5,
+							'name' => __( 'Rating', 'site-functionality' ),
+							'id'   => 'ratting',
+						),
+					),
+				),
+			),
+		);
+
+		return $meta_boxes;
+	}
 }

@@ -214,8 +214,6 @@ class Project extends Post_Type {
 			),
 		);
 
-		error_log( print_r( function_exists( 'rwmb_meta' ), true ) );
-
 		if ( is_plugin_active( 'meta-box-aio/meta-box-aio.php' ) || function_exists( '\rwmb_meta' ) ) {
 			\add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields_mb' ) );
 		} else {
