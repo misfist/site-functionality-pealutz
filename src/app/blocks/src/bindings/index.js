@@ -47,6 +47,49 @@ registerBlockBindingsSource( {
 } );
 
 registerBlockBindingsSource( {
+	name: 'site-functionality/project-clients',
+	label: __( 'Clients', 'site-functionality' ),
+	usesContext: [ 'postId', 'postType' ],
+	getFieldsList() {
+		return [
+			{
+				label: __( 'Clients', 'site-functionality' ),
+				type: 'string',
+				args: {},
+			},
+		];
+	},
+	getValues( { bindings, context } ) {
+		const { postId, postType } = context;
+		const record = select( coreStore ).getEditedEntityRecord( 'postType', postType, postId );
+		const meta = record?.meta ?? {};
+		const clients = meta.clients;
+
+		if ( ! Array.isArray( clients ) || clients.length === 0 ) {
+			return Object.fromEntries(
+				Object.keys( bindings ).map( ( attr ) => [ attr, undefined ] )
+			);
+		}
+
+		const items = clients
+			.filter( ( client ) => client.client_name )
+			.map( ( client ) => {
+				const label   = client.client_name;
+				const url     = client.client_url;
+				const content = url ? `<a href="${ url }">${ label }</a>` : label;
+				return `<li>${ content }</li>`;
+			} )
+			.join( '' );
+
+		const value = items || undefined;
+
+		return Object.fromEntries(
+			Object.keys( bindings ).map( ( attr ) => [ attr, value ] )
+		);
+	},
+} );
+
+registerBlockBindingsSource( {
 	name: 'site-functionality/project-company',
 	label: __( 'Project Company', 'site-functionality' ),
 	usesContext: [ 'postId', 'postType' ],
