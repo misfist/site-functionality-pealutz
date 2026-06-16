@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "site-functionality/client-list",
+  "version": "0.1.0",
+  "title": "Client List",
+  "category": "widgets",
+  "icon": "groups",
+  "description": "Example block scaffolded with Create Block tool.",
+  "example": {},
+  "supports": {
+    "html": true,
+    "className": true,
+    "anchor": true,
+    "ariaLabel": true,
+    "contentRole": true,
+    "interactivity": true
+  },
+  "usesContext": [
+    "postId",
+    "postType"
+  ],
+  "textdomain": "site-functionality",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

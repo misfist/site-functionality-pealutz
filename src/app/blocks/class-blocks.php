@@ -47,7 +47,7 @@ class Blocks extends Base {
      * @return void
      */
     public function register_blocks(): void {
-        register_block_type_from_metadata( __DIR__ . '/build/block' );
+        register_block_type_from_metadata( __DIR__ . '/build/client-list' );
     }
 
 	/**
@@ -75,6 +75,24 @@ class Blocks extends Base {
 	 */
 	public function register_block_category( array $block_categories, object $block_editor_context ): array {
 		return $block_categories;
+	}
+
+	/**
+	 * Get the project clients
+	 *
+	 * @param int|null $post_id
+	 *
+	 * @return void
+	 */
+	public static function get_clients( ?int $post_id = null ) {
+		global $post;
+
+		$post_id = ( $post_id ) ? (int) $post_id : get_the_ID();
+		$key     = 'clients';
+
+		$clients =  get_post_meta( $post_id, $key, true );
+
+		return $clients;
 	}
 
 	/**
