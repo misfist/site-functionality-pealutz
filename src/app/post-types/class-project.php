@@ -50,7 +50,7 @@ class Project extends Post_Type {
 		'_links_to',
 		'_links_to_target',
 	);
-	
+
 
 	/**
 	 * Init
@@ -60,189 +60,127 @@ class Project extends Post_Type {
 	public function init(): void {
 		parent::init();
 
+		if ( is_plugin_active( 'meta-box-aio/meta-box-aio.php' ) || function_exists( '\rwmb_meta' ) ) {
+			\add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields' ) );
+		} else {
+			\add_action( 'acf/include_fields', array( $this, 'register_fields_acf' ) );
+		}
+
+		\add_action( 'init', array( $this, 'fields_init' ) );
+		\add_action( 'init', array( $this, 'register_meta' ) );
+		\add_action( 'init', array( $this, 'register_bindings' ) );
+		\add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
+		\add_filter( 'render_block_core/list', array( $this, 'render_clients_list' ), 10, 2 );
+	}
+
+	/**
+	 * Initialize field definitions.
+	 *
+	 * @since 1.0.12
+	 *
+	 * @return void
+	 */
+	public function fields_init(): void {
 		self::$fields = array(
 			array(
-				'key'               => 'field_company',
-				'label'             => __( 'Company', 'site-functionality' ),
-				'name'              => 'company',
-				'type'              => 'text',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => array(
-					'width' => '',
-					'class' => '',
-					'id'    => '',
-				),
-				'default_value'     => '',
-				'placeholder'       => '',
-				'prepend'           => '',
-				'append'            => '',
-				'maxlength'         => '',
-				'ui'                => 1,
+				'id'   => 'company',
+				'name' => __( 'Company', 'site-functionality' ),
+				'type' => 'text',
 			),
 			array(
-				'key'               => 'field_url',
-				'label'             => __( 'URL', 'site-functionality' ),
-				'name'              => 'url',
-				'type'              => 'url',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => array(
-					'width' => '',
-					'class' => '',
-					'id'    => '',
-				),
-				'default_value'     => '',
-				'placeholder'       => '',
-				'ui'                => 1,
+				'id'   => 'url',
+				'name' => __( 'URL', 'site-functionality' ),
+				'type' => 'url',
 			),
 			array(
-				'key'               => 'field_sector',
-				'label'             => __( 'Sector', 'site-functionality' ),
-				'name'              => 'sector',
-				'type'              => 'text',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => array(
-					'width' => '',
-					'class' => '',
-					'id'    => '',
-				),
-				'default_value'     => '',
-				'placeholder'       => '',
-				'prepend'           => '',
-				'append'            => '',
-				'maxlength'         => '',
-				'ui'                => 1,
+				'id'   => 'sector',
+				'name' => __( 'Sector', 'site-functionality' ),
+				'type' => 'text',
 			),
 			array(
-				'key'               => 'field_location',
-				'label'             => __( 'Location', 'site-functionality' ),
-				'name'              => 'location',
-				'type'              => 'text',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => array(
-					'width' => '',
-					'class' => '',
-					'id'    => '',
-				),
-				'default_value'     => '',
-				'placeholder'       => '',
-				'prepend'           => '',
-				'append'            => '',
-				'maxlength'         => '',
-				'ui'                => 1,
+				'id'   => 'location',
+				'name' => __( 'Location', 'site-functionality' ),
+				'type' => 'text',
 			),
 			array(
-				'key'               => 'field_start_date',
-				'label'             => __( 'Start Date', 'site-functionality' ),
-				'name'              => 'start_date',
-				'type'              => 'date_picker',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => array(
-					'width' => '',
-					'class' => '',
-					'id'    => '',
+				'id'          => 'start_date',
+				'name'        => __( 'Start Date', 'site-functionality' ),
+				'type'        => 'date',
+				'js_options'  => array(
+					'dateFormat'      => 'mm/dd/yy',
+					'changeYear'      => true,
+					'yearRange'       => '-100:+100',
+					'changeMonth'     => true,
+					'showButtonPanel' => true,
+					'firstDay'        => 1,
 				),
-				'display_format'    => 'm/d/Y',
-				'return_format'     => 'd/m/Y',
-				'first_day'         => 1,
-				'ui'                => 1,
+				'save_format' => 'Ymd',
 			),
 			array(
-				'key'               => 'field_end_date',
-				'label'             => __( 'End Date', 'site-functionality' ),
-				'name'              => 'end_date',
-				'type'              => 'date_picker',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => array(
-					'width' => '',
-					'class' => '',
-					'id'    => '',
+				'id'          => 'end_date',
+				'name'        => __( 'End Date', 'site-functionality' ),
+				'type'        => 'date',
+				'js_options'  => array(
+					'dateFormat'      => 'mm/dd/yy',
+					'changeYear'      => true,
+					'yearRange'       => '-100:+100',
+					'changeMonth'     => true,
+					'showButtonPanel' => true,
+					'firstDay'        => 1,
 				),
-				'display_format'    => 'm/d/Y',
-				'return_format'     => 'd/m/Y',
-				'first_day'         => 1,
-				'ui'                => 1,
+				'save_format' => 'Ymd',
 			),
 			array(
-				'key'               => 'field_clients',
-				'label'             => __( 'Clients', 'site-functionality' ),
-				'name'              => 'clients',
-				'type'              => 'repeater',
-				'instructions'      => '',
-				'required'          => 0,
-				'conditional_logic' => 0,
-				'wrapper'           => array(
-					'width' => '',
-					'class' => '',
-					'id'    => '',
-				),
-				'collapsed'         => 'field_client_name',
-				'min'               => 0,
-				'max'               => 0,
-				'layout'            => 'table',
-				'button_label'      => '',
-				'sub_fields'        => array(
+				'id'                => 'clients',
+				'name'              => __( 'Clients', 'site-functionality' ),
+				'type'              => 'group',
+				'clone'             => true,
+				'sort_clone'        => true,
+				'allow_in_bindings' => 1,
+				'fields'            => array(
 					array(
-						'key'               => 'field_client_name',
-						'label'             => __( 'Name', 'site-functionality' ),
-						'name'              => 'client_name',
+						'id'                => 'client_name',
+						'name'              => __( 'Name', 'site-functionality' ),
 						'type'              => 'text',
-						'instructions'      => '',
-						'required'          => 0,
-						'conditional_logic' => 0,
-						'wrapper'           => array(
-							'width' => '',
-							'class' => '',
-							'id'    => '',
-						),
-						'default_value'     => '',
-						'placeholder'       => '',
-						'prepend'           => '',
-						'append'            => '',
-						'maxlength'         => '',
-						'ui'                => 1,
+						'allow_in_bindings' => 1,
 					),
 					array(
-						'key'               => 'field_client_url',
-						'label'             => __( 'URL', 'site-functionality' ),
-						'name'              => 'client_url',
+						'id'                => 'client_url',
+						'name'              => __( 'URL', 'site-functionality' ),
 						'type'              => 'url',
-						'instructions'      => '',
-						'required'          => 0,
-						'conditional_logic' => 0,
-						'wrapper'           => array(
-							'width' => '',
-							'class' => '',
-							'id'    => '',
-						),
-						'default_value'     => '',
-						'placeholder'       => '',
-						'ui'                => 1,
+						'allow_in_bindings' => 1,
 					),
 				),
 			),
 		);
+	}
 
-		if ( is_plugin_active( 'meta-box-aio/meta-box-aio.php' ) || function_exists( '\rwmb_meta' ) ) {
-			\add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields_mb' ) );
-		} else {
-			\add_action( 'acf/include_fields', array( $this, 'register_fields' ) );
-		}
+	/**
+	 * Register Fields
+	 *
+	 * @param array $meta_boxes
+	 *
+	 * @return array
+	 */
+	public function register_fields( array $meta_boxes ): array {
+		$meta_boxes[] = array(
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'show_in_rest'          => 1,
+			'allow_ai_access'       => false,
+			'post_types'            => array(
+				self::$post_type['id'],
+				'jetpack-portfolio',
+			),
+			'title'                 => __( 'Project Details', 'site-functionality' ),
+			'id'                    => 'acf_group_project_details',
+			''                      => array(
+				'relation' => 'AND',
+			),
+			'fields'                => self::$fields,
+		);
 
-		\add_action( 'init', array( $this, 'register_meta' ) );
-		\add_action( 'init', array( $this, 'register_bindings' ) );
-		\add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_editor_assets' ) );
+		return $meta_boxes;
 	}
 
 	/**
@@ -250,11 +188,11 @@ class Project extends Post_Type {
 	 *
 	 * @return void
 	 */
-	public function register_fields(): void {
+	public function register_fields_acf(): void {
 		$args = array(
 			'key'                   => 'group_project_details',
 			'title'                 => __( 'Project Details', 'site-functionality' ),
-			'fields'                => self::$fields,
+			'fields'                => self::mb_to_acf_fields( self::$fields ),
 			'location'              => array(
 				array(
 					array(
@@ -284,97 +222,37 @@ class Project extends Post_Type {
 		acf_add_local_field_group( $args );
 	}
 
-	/**
-	 * Register Fields
+		/**
+	 * Convert MB field definitions to ACF format.
 	 *
-	 * @param array $meta_boxes
-	 *
+	 * @param array $fields
 	 * @return array
 	 */
-	public function register_fields_mb( array $meta_boxes ): array {
-		$meta_boxes[] = array(
-			'label_placement'       => 'top',
-			'instruction_placement' => 'label',
-			'show_in_rest'          => 1,
-			'allow_ai_access'       => false,
-			'post_types'            => array(
-				self::$post_type['id'],
-				'jetpack-portfolio',
-			),
-			'title'                 => __( 'Project Details', 'site-functionality' ),
-			'id'                    => 'acf_group_project_details',
-			''                      => array(
-				'relation' => 'AND',
-			),
-			'fields'                => array(
-				array(
-					'type' => 'text',
-					'name' => __( 'Company', 'site-functionality' ),
-					'id'   => 'company',
-				),
-				array(
-					'type' => 'url',
-					'name' => __( 'URL', 'site-functionality' ),
-					'id'   => 'url',
-				),
-				array(
-					'type' => 'text',
-					'name' => __( 'Location', 'site-functionality' ),
-					'id'   => 'location',
-				),
-				array(
-					'type'        => 'date',
-					'name'        => __( 'Start Date', 'site-functionality' ),
-					'id'          => 'start_date',
-					'js_options'  => array(
-						'dateFormat'      => 'mm/dd/yy',
-						'changeYear'      => true,
-						'yearRange'       => '-100:+100',
-						'changeMonth'     => true,
-						'showButtonPanel' => true,
-						'firstDay'        => 1,
-					),
-					'save_format' => 'Ymd',
-				),
-				array(
-					'type'        => 'date',
-					'name'        => __( 'End Date', 'site-functionality' ),
-					'id'          => 'end_date',
-					'js_options'  => array(
-						'dateFormat'      => 'mm/dd/yy',
-						'changeYear'      => true,
-						'yearRange'       => '-100:+100',
-						'changeMonth'     => true,
-						'showButtonPanel' => true,
-						'firstDay'        => 1,
-					),
-					'save_format' => 'Ymd',
-				),
-				array(
-					'type'       => 'group',
-					'name'       => __( 'Clients', 'site-functionality' ),
-					'id'         => 'clients',
-					'clone'      => true,
-					'sort_clone' => true,
-					'fields'     => array(
-						array(
-							'type'              => 'text',
-							'allow_in_bindings' => 1,
-							'name'              => __( 'Name', 'site-functionality' ),
-							'id'                => 'client_name',
-						),
-						array(
-							'type'              => 'url',
-							'allow_in_bindings' => 1,
-							'name'              => __( 'URL', 'site-functionality' ),
-							'id'                => 'client_url',
-						),
-					),
-				),
-			),
-		);
+	protected static function mb_to_acf_fields( array $fields ): array {
+		$mapped = array();
 
-		return $meta_boxes;
+		foreach ( $fields as $field ) {
+			$type = $field['type'];
+			$acf  = array(
+				'key'   => 'field_' . $field['id'],
+				'label' => $field['name'],
+				'name'  => $field['id'],
+				'type'  => ( 'date' === $type ) ? 'date_picker' : ( ( 'group' === $type ) ? 'repeater' : $type ),
+			);
+
+			if ( 'date' === $type ) {
+				$acf['display_format'] = 'm/d/Y';
+				$acf['return_format']  = 'd/m/Y';
+				$acf['first_day']      = 1;
+			} elseif ( 'group' === $type ) {
+				$acf['layout']     = 'table';
+				$acf['sub_fields'] = self::mb_to_acf_fields( $field['fields'] ?? array() );
+			}
+
+			$mapped[] = $acf;
+		}
+
+		return $mapped;
 	}
 
 	/**
@@ -386,13 +264,38 @@ class Project extends Post_Type {
 	 */
 	public function register_meta(): void {
 		foreach ( self::$fields as $field ) {
-			if ( 'repeater' === $field['type'] ) {
+			if ( 'group' === $field['type'] ) {
+				$subfields = $field['fields'] ?? array();
+				$properties = array();
+
+				foreach ( $subfields as $subfield ) {
+					$properties[ $subfield['id'] ] = array( 'type' => 'string' );
+				}
+
+				\register_post_meta(
+					self::$post_type['id'],
+					$field['id'],
+					array(
+						'type'         => 'array',
+						'single'       => true,
+						'show_in_rest' => array(
+							'schema' => array(
+								'type'  => 'array',
+								'items' => array(
+									'type'       => 'object',
+									'properties' => $properties,
+								),
+							),
+						),
+					)
+				);
+
 				continue;
 			}
 
 			\register_post_meta(
 				self::$post_type['id'],
-				$field['name'],
+				$field['id'],
 				array(
 					'type'         => 'string',
 					'single'       => true,
@@ -427,6 +330,15 @@ class Project extends Post_Type {
 				'uses_context'       => array( 'postId', 'postType' ),
 			)
 		);
+
+		\register_block_bindings_source(
+			'site-functionality/project-clients',
+			array(
+				'label'              => __( 'Clients', 'site-functionality' ),
+				'get_value_callback' => array( $this, 'get_project_clients_value' ),
+				'uses_context'       => array( 'postId', 'postType' ),
+			)
+		);
 	}
 
 	/**
@@ -437,10 +349,10 @@ class Project extends Post_Type {
 	 * @return void
 	 */
 	public function enqueue_editor_assets(): void {
-		$asset_path = SITE_FUNCTIONALITY_PATH . '/blocks/build/bindings.asset.php';
+		$asset_path = SITE_FUNCTIONALITY_PATH . 'src/app/blocks/build/bindings.asset.php';
 
 		if ( ! file_exists( $asset_path ) ) {
-			error_log( __METHOD__ . sprintf( ': Asset file not found: %s', $asset ) );
+			error_log( __METHOD__ . sprintf( ': Asset file not found: %s', $asset_path ) );
 			return;
 		}
 
@@ -448,7 +360,7 @@ class Project extends Post_Type {
 
 		\wp_enqueue_script(
 			'site-functionality-bindings',
-			SITE_FUNCTIONALITY_URL . 'blocks/build/bindings.js',
+			SITE_FUNCTIONALITY_URL . 'src/app/blocks/build/bindings.js',
 			$asset_file['dependencies'],
 			$asset_file['version'],
 			true
@@ -519,6 +431,92 @@ class Project extends Post_Type {
 			\esc_url( $url ),
 			\esc_html( $company )
 		);
+	}
+
+	/**
+	 * Get Project Clients Binding Value
+	 *
+	 * @since 1.0.12
+	 *
+	 * @param array     $args  Binding args.
+	 * @param \WP_Block $block The block instance.
+	 * @return string|null
+	 */
+	public function get_project_clients_value( array $args, \WP_Block $block ): ?string {
+		$post_id = $block->context['postId'] ?? \get_the_ID();
+		$clients = \get_post_meta( $post_id, 'clients', true );
+
+		if ( empty( $clients ) || ! is_array( $clients ) ) {
+			return null;
+		}
+
+		$items = array();
+
+		foreach ( $clients as $client ) {
+			$name = $client['client_name'] ?? '';
+			$url  = $client['client_url'] ?? '';
+
+			if ( empty( $name ) ) {
+				continue;
+			}
+
+			$label   = \esc_html( $name );
+			$content = $url ? sprintf( '<a href="%s">%s</a>', \esc_url( $url ), $label ) : $label;
+			$items[] = '<li>' . $content . '</li>';
+		}
+
+		if ( empty( $items ) ) {
+			return null;
+		}
+
+		return implode( '', $items );
+	}
+
+	/**
+	 * Render clients list block with bound meta data.
+	 *
+	 * @since 1.0.12
+	 *
+	 * @param string   $block_content
+	 * @param array    $block
+	 * @return string
+	 */
+	public function render_clients_list( string $block_content, array $block ): string {
+		$source = $block['attrs']['metadata']['bindings']['content']['source'] ?? '';
+
+		if ( 'site-functionality/project-clients' !== $source ) {
+			return $block_content;
+		}
+
+		$post_id = \get_the_ID();
+		$clients = \get_post_meta( $post_id, 'clients', true );
+
+		if ( empty( $clients ) || ! is_array( $clients ) ) {
+			return $block_content;
+		}
+
+		$items = array();
+
+		foreach ( $clients as $client ) {
+			$name = $client['client_name'] ?? '';
+			$url  = $client['client_url'] ?? '';
+
+			if ( empty( $name ) ) {
+				continue;
+			}
+
+			$label   = \esc_html( $name );
+			$content = $url ? sprintf( '<a href="%s">%s</a>', \esc_url( $url ), $label ) : $label;
+			$items[] = '<li class="wp-block-list-item">' . $content . '</li>';
+		}
+
+		if ( empty( $items ) ) {
+			return $block_content;
+		}
+
+		$inner = implode( '', $items );
+
+		return preg_replace( '#(<ul[^>]*>).*?(</ul>)#s', '$1' . $inner . '$2', $block_content );
 	}
 
 	/**
