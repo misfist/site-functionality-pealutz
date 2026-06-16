@@ -40,9 +40,9 @@ class Page extends Base {
 		parent::init();
 
 		if ( is_plugin_active( 'meta-box-aio/meta-box-aio.php' )  || function_exists( '\rwmb_meta' ) ) {
-			\add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields_mb' ) );
+			\add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields' ) );
 		} else {
-			\add_action( 'acf/include_fields', array( $this, 'register_fields' ) );
+			\add_action( 'acf/include_fields', array( $this, 'register_fields_acf' ) );
 		}
 	}
 
@@ -51,7 +51,7 @@ class Page extends Base {
 	 *
 	 * @return void
 	 */
-	public function register_fields(): void {
+	public function register_fields_acf(): void {
 		$fields = array(
 			array(
 				'key'               => 'field_skills_group',
@@ -192,7 +192,7 @@ class Page extends Base {
 	 *
 	 * @return array
 	 */
-	function register_fields_mb( array $meta_boxes ): array {
+	function register_fields( array $meta_boxes ): array {
 		$meta_boxes[] = array(
 			'label_placement'       => 'top',
 			'instruction_placement' => 'label',
