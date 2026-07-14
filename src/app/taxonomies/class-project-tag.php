@@ -32,7 +32,7 @@ class Project_Tag extends Taxonomy {
 		),
 		'hierarchical' => true,
 		'has_archive'  => false,
-		'archive'      => false,
+		'archive'      => 'project-tag',
 		'with_front'   => false,
 		'rest'         => 'project-tags',
 	);
