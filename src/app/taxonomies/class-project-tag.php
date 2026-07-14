@@ -38,6 +38,8 @@ class Project_Tag extends Taxonomy {
 		'query_var'    => 'project-tag',
 	);
 
+	public static $archive_slug = 'portfolio';
+
 	/**
 	 * Constructor.
 	 *
@@ -45,24 +47,16 @@ class Project_Tag extends Taxonomy {
 	 */
 	public function __construct() {
 		parent::__construct();
+		\add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields' ) );
 		\add_filter( 'query_vars', array( $this, 'register_query_vars' ) );
+		\add_filter( 'term_link', array( $this, 'modify_term_link' ), 10, 3 );
 
 		\add_action( 'init', array( $this, 'rewrite_rules' ), 10, 0 );
-		\add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields' ) );
 	}
 
 	/**
-	 * Add rewrite rules
-	 *
-	 * @link https://developer.wordpress.org/reference/functions/add_rewrite_rule/
-	 *
-	 * @return void
-	 */
-	public function rewrite_rules(): void {}
-
-	/**
 	 * Register Fields
-	 * 
+	 *
 	 * @since 1.0.14
 	 *
 	 * @param array $meta_boxes
@@ -97,4 +91,32 @@ class Project_Tag extends Taxonomy {
 		$vars[] = 'project-tag';
 		return $vars;
 	}
+
+	/**
+	 * Modify term link
+	 *
+	 * @param string $termlink
+	 * @param \WP_Term $term
+	 * @param string $taxonomy
+	 *
+	 * @return string
+	 */
+	public function modify_term_link( string $termlink, \WP_Term $term, string $taxonomy ): string {
+		if( is_admin() || self::$taxonomy['id'] !== $taxonomy ) {
+			return $termlink;
+		}
+
+		return esc_url( add_query_arg( self::$taxonomy['query_var'], $term->slug, get_home_url( null, self::$archive_slug ) ) );
+
+		return $termlink;
+	}
+
+	/**
+	 * Add rewrite rules
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/add_rewrite_rule/
+	 *
+	 * @return void
+	 */
+	public function rewrite_rules(): void {}
 }
