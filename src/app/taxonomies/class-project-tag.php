@@ -35,6 +35,7 @@ class Project_Tag extends Taxonomy {
 		'archive'      => 'project-tag',
 		'with_front'   => false,
 		'rest'         => 'project-tags',
+		'query_var'    => 'project-tag',
 	);
 
 	/**
@@ -44,6 +45,7 @@ class Project_Tag extends Taxonomy {
 	 */
 	public function __construct() {
 		parent::__construct();
+		\add_filter( 'query_vars', array( $this, 'register_query_vars' ) );
 
 		\add_action( 'init', array( $this, 'rewrite_rules' ), 10, 0 );
 		\add_filter( 'rwmb_meta_boxes', array( $this, 'register_fields' ) );
@@ -81,5 +83,18 @@ class Project_Tag extends Taxonomy {
 		);
 
 		return $meta_boxes;
+	}
+
+	/**
+	 * Register custom query vars
+	 *
+	 * @link https://developer.wordpress.org/reference/hooks/query_vars/
+	 *
+	 * @param array $vars The array of available query variables
+	 * @return array $vars The array of available query variables
+	 */
+	public function register_query_vars( $vars ): array {
+		$vars[] = 'project-tag';
+		return $vars;
 	}
 }
